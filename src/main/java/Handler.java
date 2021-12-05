@@ -1,5 +1,6 @@
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -9,7 +10,7 @@ public class Handler {
     String shortLink;
     String longLink;
 
-    public String generateShortLink () {
+    public String generateShortLink (String link) throws MalformedURLException {
         /*
         byte[] array = new byte[5];
         new Random().nextBytes(array);
@@ -22,7 +23,13 @@ public class Handler {
             int index = new Random().nextInt(alphabet.length());
             array[i] = alphabet.charAt(index);
         }
-        return String.valueOf(array);
+
+        URL url = new URL(link);
+        String protocol = url.getProtocol();
+        String host = url.getHost();
+        String domain = host.substring(host.lastIndexOf(".") + 1);
+
+        return protocol + "://" + String.valueOf(array) + "." + domain;
     }
 
     public String getShortLink(String longLink) {
@@ -37,7 +44,14 @@ public class Handler {
                 }
             }
         }
-        shortLink = generateShortLink();
+
+
+        try {
+            shortLink = generateShortLink(longLink);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
         links.put(shortLink, longLink);
         return shortLink;
     }
