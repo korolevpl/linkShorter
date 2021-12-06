@@ -2,48 +2,44 @@ import java.util.Scanner;
 
 public class Manager {
     private static  final String HELP_STRING = """
-                Выбирай команду:
-                Short
-                Long            
+                Enter the command:
+                short
+                long
+                exit            
                 """;
     private void help() {
         System.out.println(HELP_STRING);
     }
-//    private static  final String HELP2_STRING = """
-//                Yes
-//                No
-//                """;
-//    private void help2() {
-//        System.out.println(HELP2_STRING);
-//    }
+
     public static void main(String[] args) {
-        System.out.println("Я могу укоротить(Short) или увеличить(Long) твою ссылку");
-            Manager manager = new Manager();
+
+        Manager manager = new Manager();
+        Handler handler = new Handler();
+        Scanner scanner = new Scanner(System.in);
+        String link = "";
+        boolean cycle = true;
+        while (cycle) {
             manager.help();
-            Handler handler = new Handler();
-            Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
             String[] words = input.split(" ");
-            String link = "";
+
             switch (words[0]) {
-                case "Short":
+                case "short":
                     link = handler.getShortLink(words[1]);
+                    System.out.println(link);
                     break;
-                case "Long":
+                case "long":
                     link = handler.getLongLink(words[1]);
+                    System.out.println(link);
                     break;
-
+                case "exit":
+                    System.out.println("Bye");
+                    cycle = false;
+                    break;
+                default:
+                    System.out.println(words[0] + " - this command is invalid. Try again.");
+                    break;
             }
-        System.out.println(link);
-//        boolean b = true;
-//            while (b) {
-//                System.out.println("Есть еще ссылка?");
-//                main.help2();
-//                switch ()
-//            }
+        }
     }
-
-
-
-
 }
